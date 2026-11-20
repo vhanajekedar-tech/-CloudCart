@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_IMAGE = 'kedarvhanaje/cloudcart'
+        DOCKER_TAG = "build-${BUILD_NUMBER}"
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -9,25 +14,50 @@ pipeline {
             }
         }
 
-        stage('Environment Check') {
+        stage('Docker Build') {
             steps {
-                sh 'git --version'
-                sh 'kubectl version --client'
+                sh 'docker build -t $DOCKER_IMAGE:$DOCKER_TAG .'
             }
         }
 
-        stage('Kubernetes Verification') {
+        stage('Docker Hub Push') {
             steps {
-                sh 'kubectl get pods -n cloudcart'
-                sh 'kubectl get deployments -n cloudcart'
-                sh 'kubectl get services -n cloudcart'
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-credentials',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh '''
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker push "$DOCKER_IMAGE:$DOCKER_TAG"
+                        docker logout
+                    '''
+                }
             }
         }
 
-        stage('Complete') {
+        stage('Kubernetes Deploy') {
             steps {
-                echo 'CloudCart CI pipeline completed successfully!'
+                sh '''
+                    kubectl set image deployment/cloudcart \
+                    cloudcart=$DOCKER_IMAGE:$DOCKER_TAG \
+                    -n cloudcart
+
+                    kubectl rollout status deployment/cloudcart -n cloudcart
+                '''
             }
+        }
+    }
+
+    post {
+        always {
+            sh 'docker image prune -f || true'
+        }
+        success {
+            echo 'CloudCart CI/CD completed successfully!'
+        }
+        failure {
+            echo 'CloudCart CI/CD failed. Check Console Output.'
         }
     }
 }
