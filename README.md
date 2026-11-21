@@ -1,5 +1,14 @@
 # CloudCart – Production-Ready E-Commerce Application on Kubernetes
 
+## 📸 Project Screenshots
+
+![CloudCart Screenshot 1](screenshots/Screenshot%202026-11-21%20160000.png)
+
+![CloudCart Screenshot 2](screenshots/Screenshot%202026-11-21%20160107.png)
+
+![CloudCart Screenshot 3](screenshots/Screenshot%202026-11-21%20160249.png)
+
+![CloudCart Screenshot 4](screenshots/Screenshot%202026-11-21%20160811.png)
 CloudCart is a containerized e-commerce web application deployed on a Kubernetes cluster. It demonstrates containerization, CI/CD automation, orchestration, and application monitoring using industry-relevant DevOps tools.
 
 ## Project Overview
