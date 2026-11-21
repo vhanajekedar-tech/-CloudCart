@@ -99,6 +99,16 @@ Through this project, I gained practical experience in:
 - Implementing application monitoring
 - Working with AWS EC2 and Linux environments
 
+## 👨‍💻 Author
+
+**Kedar Vhanaje**
+
+Cloud Computing & DevOps Enthusiast
+
+- **GitHub:** [vhanajekedar-tech](https://github.com/vhanajekedar-tech)
+- **LinkedIn:** [Kedar Vhanaje](https://linkedin.com/in/kedar-vhanaje-13408a274)
+
+⭐ If you find this project interesting, feel free to explore the repository!
 ---
 
 **Project:** CloudCart – Production-Ready E-Commerce Application on Kubernetes  
